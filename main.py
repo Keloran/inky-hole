@@ -129,7 +129,7 @@ class Weather:
         self.TempCelciusFeels = temp["feels_like"] - 273.15
 
     def Wind(self, wind):
-        self.WindSpeed = str(wind["speed"] * 2.237) + "mph"
+        self.WindSpeed = str("%.0f" % wind["speed"]) + "mp/h"
         windDir = wind["deg"]
 
         if windDir > 0 and windDir < 46:
@@ -157,16 +157,20 @@ class Weather:
 
         #str("%.1f" % round(self.RatioBlocked, 2))
 
-        cPos = (186 + ((self.FontSizeLarge / 2) * len(str("%.0f" % self.TempCelcius)))) 
+        cPos = (186 + ((self.FontSizeLarge / 2) * len(str("%.0f" % self.TempCelcius))))
         font3 = ImageFont.truetype(FredokaOne, self.FontSizeLarge)
         font4 = ImageFont.truetype(FredokaOne, self.FontSizeLarge + 3)
         fontC = ImageFont.truetype(FredokaOne, self.FontSize - 5)
+
         draw.text((183, 10), str("%.0f" % self.TempCelcius), self.InkyDisplay.BLACK, font3)
         draw.text((cPos, 10), "C", self.InkyDisplay.BLACK, fontC)
-        draw.text((183, 30), str("%.0f" % self.TempCelciusFeels), self.InkyDisplay.BLACK, font3)
-        draw.text((cPos, 30), "C", self.InkyDisplay.BLACK, fontC)
+
+        if self.TempCelcius != self.TempCelciusFeels:
+            draw.text((183, 30), str("%.0f" % self.TempCelciusFeels), self.InkyDisplay.BLACK, font3)
+            draw.text((cPos, 30), "C", self.InkyDisplay.BLACK, fontC)
 
         draw.text((180, 70), self.WindDirection, self.InkyDisplay.BLACK, font4)
+        draw.text((170, 90), self.WindSpeed, self.InkyDisplay.BLACK, font2)
 
         return img
 
@@ -185,7 +189,7 @@ class PiHole:
 
         self.AdsBlocked = (adsblocked1 + adsblocked2)
         self.RatioBlocked = (ratioblocked1 + ratioblocked2)
-        
+
         self.FontSize = fontsize
         self.Draw = draw
         self.InkyDisplay = inky_display
@@ -223,7 +227,7 @@ class Seperator:
         self.Draw.text((120, 0), "|", self.InkyDisplay.BLACK, ImageFont.truetype(FredokaOne, 32))
         self.Draw.text((120, 30), "|", self.InkyDisplay.BLACK, ImageFont.truetype(FredokaOne, 32))
         self.Draw.text((120, 60), "|", self.InkyDisplay.BLACK, ImageFont.truetype(FredokaOne, 32))
-    
+
 
 # Output
 print "Inky Start"
